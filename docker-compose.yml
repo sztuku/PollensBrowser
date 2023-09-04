@@ -18,7 +18,8 @@ services:
 
   app:
     restart: on-failure
-    build: .
+    build:
+      context: ./app/
     depends_on:
       postgres:
         condition: service_healthy
@@ -30,8 +31,8 @@ services:
       - "3000:3000"
     command: npm run start
     volumes:
-      - .:/server/
-      - /server/node_modules
+      - .:/server/app/
+      - /server/app/node_modules
 
   web:
     restart: on-failure
