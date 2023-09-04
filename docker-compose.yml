@@ -1,0 +1,48 @@
+# docker-compose.yml
+version: "3"
+services:
+
+  postgres:
+    image: postgres:11
+    ports:
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    restart: on-failure
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://user:pass@postgres:5432/db
+      NODE_ENV: development
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    command: npm run start
+    volumes:
+      - .:/server/
+      - /server/node_modules
+
+  web:
+    restart: on-failure
+    build:
+      context: ./frontend/front/
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3001
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./web:/usr/src/web:cached
+    command: "npm run dev"

@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "wekthor",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.5.0",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "bootstrap": "^5.3.1",
+    "bootstrap-vue": "^2.23.1",
+    "cors": "^2.8.5",
+    "db": "^4.0.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "knex": "^2.4.2",
+    "nodemon": "^2.0.22",
+    "pg": "^8.11.0",
+    "request": "^2.88.2"
+  }
+}
