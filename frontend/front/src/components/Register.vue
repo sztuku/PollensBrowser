@@ -2,7 +2,7 @@
     <div class="row">
 
         <div class="col-6 mx-auto mt-5">
-            <div v-if="error" class="alert alert-danger" role="alert">
+            <div v-if="error==true" class="alert alert-danger" role="alert">
                 <div class="alert alert-danger" role="alert">
                     <h3>Invalid data or name occupied</h3>
                 </div>
@@ -66,10 +66,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        "Access-Control-Allow-Origin": "*",
-                        "withCredentials": "true"
                     },
-                    withCredentials:true,
                     body: JSON.stringify({ name:this.formData.name,password: this.formData.password })
                 };
 
@@ -84,7 +81,7 @@ export default {
                        {
                            this.error=false
                            this.$emit("userName",data.userName);
-                           this.$emit("confirm", 'login');
+                           this.$emit("confirm", 'check');
 
                        }
 

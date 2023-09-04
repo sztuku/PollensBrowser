@@ -33,7 +33,8 @@ router.post('/', async (req, res) => {
 
 
     if (!name || !password) {
-        return res.render('welcome',{error:true});
+        // return res.render('welcome',{error:true});
+        return res.status(200).send({status:'error'})
 
     }
 
@@ -46,7 +47,9 @@ router.post('/', async (req, res) => {
 
         if (q.rows[0]["password"]!==password)
         {
-            return res.render('welcome',{error:true});
+            // return res.render('welcome',{error:true});
+            return res.status(200).send({status:'error'})
+
         }
 
         console.log(q.rows[0]["name"])
@@ -62,7 +65,9 @@ router.post('/', async (req, res) => {
         return res.status(200).send({status:'logged'})
     } catch (error) {
         console.error('Error logging in', error);
-        res.render('welcome',{error:true});
+        // res.render('welcome',{error:true});
+        return res.status(200).send({status:'error'})
+
         // return res.status(500).send('Error logging in');
     }
 });

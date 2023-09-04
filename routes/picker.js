@@ -23,7 +23,7 @@ var grass=['Grass / Poaceae']
 var tree=['Alder','Birch','Cypress','Elm','Hazel','Oak','Pine','Plane','Poplar / Cottonwood']
 var weed=['Chenopod','Mugwort','Nettle','Ragweed']
 
-router.get('/',checkAuthentication,async (req, res) => {
+router.get('/',async (req, res) => {
     try
     {
         client.connect();
@@ -31,7 +31,16 @@ router.get('/',checkAuthentication,async (req, res) => {
     {
 
     }
-    const name =req.session.user
+
+    var name='piotr'
+
+    if(req.query.name)
+    {
+        console.log("username: "+req.query.name)
+        name=req.query.name
+    }
+    console.log("somebody is downloading")
+    // const name =req.session.user
     const selectPollens = `select * from pollens where name=$1`;
     let response=await client.query(selectPollens, [name])
     delete response.rows[0].name
@@ -69,15 +78,23 @@ router.get('/',checkAuthentication,async (req, res) => {
         }
     }
     // console.log("client:")
-    // console.log(clientGrass)
-    res.render('picker', {grass: grass, tree: tree, weed: weed,clientGrass: clientGrass, clientTree: clientTree, clientWeed: clientWeed});
+
+    console.log(clientGrass)
+    return res.json( {grass: grass, tree: tree, weed: weed,clientGrass: clientGrass, clientTree: clientTree, clientWeed: clientWeed}).end();
+    // res.render('picker', {grass: grass, tree: tree, weed: weed,clientGrass: clientGrass, clientTree: clientTree, clientWeed: clientWeed});
 });
 
-router.post('/', checkAuthentication,async (req, res) => {
-    const name = req.session.user
+router.post('/',async (req, res) => {
+    var name = 'piotr'
+    if(req.body.name)
+    {
+        name = req.body.name
+    }
     // console.log(req.body.pollen);
     const pollens = req.body.pollen
-    console.log(pollens.length)
+    console.log("dlugosc tablicy: "+pollens.length)
+    console.log(" tablicy: "+pollens)
+    console.log(" name: "+name)
     try
     {
         client.connect();
@@ -95,15 +112,13 @@ router.post('/', checkAuthentication,async (req, res) => {
         for (let i = 0; i < pollens.length; i++) {
             // console.log(pollens[i])
             console.log("zmieniane: "+pollens[i].replace(/\s|\//g))
-
             const updatePollens = `Update pollens set ${pollens[i].replace(/\s|\//g, '')}=$1 where name=$2`;
             await client.query(updatePollens, ['t', name])
         }
     }
 
-    // res.render('picker',{grass:grass,tree:tree,weed:weed});
-    res.redirect('/picker')
-
+    // res.redirect('/picker')
+    return res.status(200).send({status:'ok'})
     //
     // try {
     //     client.connect();

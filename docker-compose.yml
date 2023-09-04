@@ -37,6 +37,9 @@ services:
     restart: on-failure
     build:
       context: ./frontend/front/
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
       - HOST=0.0.0.0
       - PORT=3001

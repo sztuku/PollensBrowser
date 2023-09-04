@@ -66,10 +66,7 @@ export default {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        "Access-Control-Allow-Origin": "*",
-                        "withCredentials": "true"
                     },
-                    withCredentials:true,
                     body: JSON.stringify({ name:this.formData.name,password: this.formData.password })
                 };
 
@@ -79,13 +76,14 @@ export default {
                         console.log(data.status)
                         if (data.status === 'logged')
                         {
-                            this.$emit("confirm", 'login');
+                            this.$emit("confirm", 'check');
                             this.$emit("userName",this.formData.name);
-
+                            this.error=false
 
                         }else
                         {
                             this.$emit("confirm", 'login');
+                            this.error=true
                         }
                         // this.$emit("login");
                         // check for error response
@@ -138,10 +136,7 @@ export default {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    "Access-Control-Allow-Origin": "*",
-                    "withCredentials": "true"
                 },
-                withCredentials:true,
                 body: JSON.stringify({ cityName:'szczercow'})
             };
             fetch('http://localhost:3000/check', requestOptions)
